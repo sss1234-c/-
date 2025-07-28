@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>لعبة XO</title>
+  <style>
+    body {
+      font-family: Tahoma;
+      background-color: #222;
+      color: white;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #ffcc00;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      gap: 10px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .cell {
+      width: 100px;
+      height: 100px;
+      font-size: 36px;
+      background-color: #444;
+      color: white;
+      border: 2px solid #888;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cell:hover {
+      background-color: #666;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #00ffcc;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .back {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 10px 20px;
+      background-color: #2ecc71;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>⭕❌ لعبة XO</h1>
+
+  <div class="board" id="board">
+    <div class="cell" onclick="makeMove(0)"></div>
+    <div class="cell" onclick="makeMove(1)"></div>
+    <div class="cell" onclick="makeMove(2)"></div>
+    <div class="cell" onclick="makeMove(3)"></div>
+    <div class="cell" onclick="makeMove(4)"></div>
+    <div class="cell" onclick="makeMove(5)"></div>
+    <div class="cell" onclick="makeMove(6)"></div>
+    <div class="cell" onclick="makeMove(7)"></div>
+    <div class="cell" onclick="makeMove(8)"></div>
+  </div>
+
+  <div class="message" id="message"></div>
+
+  <button onclick="resetGame()">إعادة اللعب</button>
+
+  <br><br>
+  <a href="index.html" class="back">⬅️ الرجوع للرئيسية</a>
+
+  <script>
+    let board = ["", "", "", "", "", "", "", "", ""];
+    let currentPlayer = "X";
+    let gameActive = true;
+
+    function makeMove(index) {
+      if (!gameActive || board[index] !== "") return;
+
+      board[index] = currentPlayer;
+      document.getElementsByClassName("cell")[index].innerText = currentPlayer;
+
+      if (checkWinner()) {
+        document.getElementById("message").innerText = `🎉 اللاعب ${currentPlayer} فاز!`;
+        gameActive = false;
+      } else if (!board.includes("")) {
+        document.getElementById("message").innerText = "انتهت اللعبة: تعادل 🤝";
+        gameActive = false;
+      } else {
+        currentPlayer = currentPlayer === "X" ? "O" : "X";
+      }
+    }
+
+    function checkWinner() {
+      const winCombos = [
+        [0,1,2], [3,4,5], [6,7,8],
+        [0,3,6], [1,4,7], [2,5,8],
+        [0,4,8], [2,4,6]
+      ];
+
+      return winCombos.some(combo =>
+        combo.every(i => board[i] === currentPlayer)
+      );
+    }
+
+    function resetGame() {
+      board = ["", "", "", "", "", "", "", "", ""];
+      currentPlayer = "X";
+      gameActive = true;
+      document.querySelectorAll(".cell").forEach(cell => cell.innerText = "");
+      document.getElementById("message").innerText = "";
+    }
+  </script>
+
+</body>
+</html>
+
+

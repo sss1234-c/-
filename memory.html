@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>🧠 لعبة الذاكرة</title>
+  <style>
+    body {
+      font-family: Tahoma;
+      background-color: #222;
+      color: white;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #ffcc00;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 80px);
+      gap: 15px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .card {
+      width: 80px;
+      height: 80px;
+      background-color: #444;
+      border-radius: 8px;
+      font-size: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: transparent;
+      transition: 0.3s;
+      border: 2px solid #999;
+    }
+
+    .card.revealed {
+      color: white;
+      background-color: #3498db;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #00ffcc;
+    }
+
+    .back {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 10px 20px;
+      background-color: #2ecc71;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🧠 لعبة الذاكرة</h1>
+  <p>اضغط على الكروت لمطابقة الرموز</p>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="message" id="message"></div>
+
+  <a href="index.html" class="back">⬅️ الرجوع للرئيسية</a>
+
+  <script>
+    const symbols = ['🍎','🍎','🚗','🚗','🐱','🐱','🎵','🎵'];
+    let firstCard = null;
+    let secondCard = null;
+    let lockBoard = false;
+    let matches = 0;
+
+    function shuffle(array) {
+      return array.sort(() => 0.5 - Math.random());
+    }
+
+    function createBoard() {
+      const grid = document.getElementById("grid");
+      const shuffled = shuffle([...symbols]);
+
+      shuffled.forEach(symbol => {
+        const card = document.createElement("div");
+        card.classList.add("card");
+        card.innerText = symbol;
+
+        card.onclick = () => {
+          if (lockBoard || card.classList.contains("revealed")) return;
+
+          card.classList.add("revealed");
+
+          if (!firstCard) {
+            firstCard = card;
+          } else {
+            secondCard = card;
+            lockBoard = true;
+
+            setTimeout(() => {
+              if (firstCard.innerText === secondCard.innerText) {
+                matches++;
+                if (matches === symbols.length / 2) {
+                  document.getElementById("message").innerText = "🎉 مبروك! طابقت كل الرموز!";
+                }
+              } else {
+                firstCard.classList.remove("revealed");
+                secondCard.classList.remove("revealed");
+              }
+
+              firstCard = null;
+              secondCard = null;
+              lockBoard = false;
+            }, 800);
+          }
+        };
+
+        grid.appendChild(card);
+      });
+    }
+
+    createBoard();
+  </script>
+
+</body>
+</html>

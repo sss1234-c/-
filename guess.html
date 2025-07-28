@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>🔢 لعبة التخمين</title>
+  <style>
+    body {
+      font-family: Tahoma;
+      background-color: #222;
+      color: white;
+      text-align: center;
+      padding: 50px;
+    }
+
+    h1 {
+      color: #ffcc00;
+      margin-bottom: 20px;
+    }
+
+    input[type="number"] {
+      padding: 10px;
+      font-size: 18px;
+      width: 100px;
+      text-align: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-left: 10px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 22px;
+      color: #00ffcc;
+    }
+
+    .back {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 10px 20px;
+      background-color: #2ecc71;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🔢 لعبة التخمين</h1>
+  <p>اخمن رقم من 1 إلى 10</p>
+
+  <input type="number" id="guess" min="1" max="10">
+  <button onclick="checkGuess()">تخمين</button>
+
+  <div class="message" id="message"></div>
+
+  <a href="index.html" class="back">⬅️ الرجوع للرئيسية</a>
+
+  <script>
+    let randomNumber = Math.floor(Math.random() * 10) + 1;
+    const message = document.getElementById("message");
+
+    function checkGuess() {
+      const guess = Number(document.getElementById("guess").value);
+
+      if (guess < 1 || guess > 10 || isNaN(guess)) {
+        message.innerText = "❗ من فضلك أدخل رقم من 1 إلى 10";
+        return;
+      }
+
+      if (guess === randomNumber) {
+        message.innerText = `🎉 صح! الرقم هو ${randomNumber}`;
+      } else if (guess < randomNumber) {
+        message.innerText = "🔼   الرقم صح";
+      } else {
+        message.innerText = "🔽اختار رقم اصغر  ";
+      }
+    }
+  </script>
+
+</body>
+</html>
